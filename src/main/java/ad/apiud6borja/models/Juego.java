@@ -4,13 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity(name = "juegos")
 public class Juego {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_juego;
+    private Long id;
+    @NotBlank(message = "Hay que ponerle un nombre digo yo, magí")
     String nombre;
 
     public Juego(String nombre) {
@@ -29,11 +31,11 @@ public class Juego {
         this.nombre = nombre;
     }
 
-    public void setId_juego(Long idJuego) {
-        this.id_juego = idJuego;
+    public void setId(Long idJuego) {
+        this.id = idJuego;
     }
 
-    public Long getId_juego() {
-        return id_juego;
+    public Long getId() {
+        return id;
     }
 }

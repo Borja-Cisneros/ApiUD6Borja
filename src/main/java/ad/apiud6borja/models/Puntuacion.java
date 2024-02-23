@@ -1,13 +1,17 @@
 package ad.apiud6borja.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity(name = "puntuaciones")
 public class Puntuacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_puntuacion;
+    @Min(value = 0, message = "Como vas a poner puntuacion negativa manin? tienes manos?")
     private Long puntuacion;
+    @NotBlank(message = "A ver mi pana, tendras que ponerle un jugador no?")
     private String jugador;
     @ManyToOne
     @JoinColumn(name = "id_juego")

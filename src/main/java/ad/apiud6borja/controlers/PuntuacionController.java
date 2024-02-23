@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/puntuacion")
 public class PuntuacionController {
@@ -25,6 +25,11 @@ public class PuntuacionController {
     @GetMapping("/{id}")
     public Puntuacion obtenerPuntuacionID(@PathVariable Long id) {
         return puntuacionRepository.findById(id).orElseThrow(() -> new RuntimeException("Puntuacion no encontrado"));
+    }
+
+    @GetMapping("/juego/{idJuego}")
+    public List<Puntuacion> getPuntuacionesPorJuego(@PathVariable Long idJuego) {
+        return puntuacionRepository.findByJuegoIdOrderByPuntuacionDesc(idJuego);
     }
 
     //Alta puntuacion
@@ -45,7 +50,6 @@ public class PuntuacionController {
     public Puntuacion actualizarCategoria(@PathVariable Long id, @RequestBody Puntuacion puntuacion) {
         return puntuacionRepository.findById(id).map(puntuacionTmp -> {
             puntuacionTmp.setPuntuacion(puntuacion.getPuntuacion());
-            puntuacionTmp.setJuego(puntuacion.getJuego());
             puntuacionTmp.setJugador(puntuacion.getJugador());
             return puntuacionRepository.save(puntuacionTmp);
         }).orElseThrow(() -> new RuntimeException("Puntuacion no encontrada al actualizar, mano"));
@@ -56,5 +60,4 @@ public class PuntuacionController {
     public void eliminarPuntuacion(@PathVariable Long id) {
         puntuacionRepository.deleteById(id);
     }
-
 }
