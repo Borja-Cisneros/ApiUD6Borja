@@ -5,7 +5,11 @@ import ad.apiud6borja.repositories.JuegoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/juego")
@@ -27,8 +31,23 @@ public class JuegoController {
     }
 
     @GetMapping("/masjugados")
-    public List<Juego> getJuegosMasJugados() {
-        return juegoRepository.findJuegosMasJugados();
+    public List<Map<String, Object>> getJuegosMasJugados() {
+        List<Object[]> juegosMasJugados = juegoRepository.findJuegosMasJugados();
+        List<Map<String, Object>> resultado = new ArrayList<>();
+
+        for (Object[] objeto : juegosMasJugados) {
+            Juego juego = (Juego) objeto[0];
+            Long numJugadores = (Long) objeto[1];
+
+            Map<String, Object> juegoInfo = new HashMap<>();
+            juegoInfo.put("id", juego.getId());
+            juegoInfo.put("nombre", juego.getNombre());
+            juegoInfo.put("numJugadores", numJugadores);
+
+            resultado.add(juegoInfo);
+        }
+
+        return resultado;
     }
 
     // Alta juego
